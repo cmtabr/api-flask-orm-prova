@@ -24,8 +24,6 @@ def populate():
     session.add_all(games)
     session.commit()
 
-
-
 @app.route('/insert', methods=['POST'])
 def insert():
     game_name = request.form['game_name']
@@ -40,13 +38,16 @@ def insert():
 
 def get_games():
     games = session.query(Table).all()
-
     for game in games:
         print(f'ID: {id}, Nome: {game.game_name}, Preço: {game.price} , Quantidade: {game.quantity}, Plataforma: {game.plataform}')
 
+@app.route('/populate', methods=['POST'])
+def data():
+    populate()
+    return redirect('/')
+
 @app.route('/')
 def index():
-    populate()
     get_games()
     return render_template('index.html')
 
